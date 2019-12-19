@@ -10,19 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Extract tag name
-      id: tag
-      uses: actions/github-script@0.2.0
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          return context.payload.ref.replace(/\/refs\/tags\//, ''); 
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
     - name: Build the Docker image 2
-      run: docker build ./app --file app/Dockerfile --tag docker.pkg.github.com/frutik/aio-py/aio-test:${{ steps.tag.outputs.result }}
+      run: docker build ./app --file app/Dockerfile --tag docker.pkg.github.com/frutik/aio-py/aio-test:${{ steps.get_version.outputs.VERSION }}
     - name: log in
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
       run: docker login -u frutik -p GITHUB_TOKEN docker.pkg.github.com
     - name: push
-      run: docker push docker.pkg.github.com/frutik/aio-py/aio-test:${{ steps.tag.outputs.result }}
+      run: docker push docker.pkg.github.com/frutik/aio-py/aio-test:${{ steps.get_version.outputs.VERSION }}
    
