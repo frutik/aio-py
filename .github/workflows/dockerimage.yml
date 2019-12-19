@@ -11,9 +11,11 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build the Docker image
-      run: docker build ./app --file app/Dockerfile --tag docker.pkg.github.com/frutik/aio-py/aio-test:latest
+      run: docker build ./app --file app/Dockerfile --tag docker.pkg.github.com/frutik/aio-py/aio-test:${{ github.ref }}
     - name: log in
-      run: docker login -u frutik -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+      run: docker login -u frutik -p GITHUB_TOKEN docker.pkg.github.com
     - name: push
-      run: docker push docker.pkg.github.com/frutik/aio-py/aio-test:latest
+      run: docker push docker.pkg.github.com/frutik/aio-py/aio-test:${{ github.ref }}
    
