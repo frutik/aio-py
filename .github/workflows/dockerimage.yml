@@ -13,7 +13,7 @@ jobs:
     - name: Build the Docker image
       run: docker build ./app --file app/Dockerfile --tag docker.pkg.github.com/frutik/aio-py/aio-test:latest
     - name: log in
-      run: docker login -u frutik -p GITHUB_TOKEN docker.pkg.github.com
+      run: docker login -u frutik -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
     - name: push
       run: docker push docker.pkg.github.com/frutik/aio-py/aio-test:latest
    
