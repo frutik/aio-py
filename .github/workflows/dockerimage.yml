@@ -12,3 +12,6 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build the Docker image
       run: docker build ./app --file app/Dockerfile --tag my-image-name:$(date +%s)
+    - name: Build the Docker image
+      run: docker login -u frutik -p GITHUB_TOKEN docker.pkg.github.com
+   
