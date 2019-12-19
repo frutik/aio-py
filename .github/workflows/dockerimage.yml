@@ -17,7 +17,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           return context.payload.ref.replace(/\/refs\/tags\//, ''); 
-    - name: Build the Docker image
+    - name: Build the Docker image 2
       run: docker build ./app --file app/Dockerfile --tag docker.pkg.github.com/frutik/aio-py/aio-test:${{ steps.tag.outputs.result }}
     - name: log in
       env:
