@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - uses: olegtarasov/get-tag@j1
-        id: tagName      
+      id: tagName      
     - name: Build the Docker image
       run: docker build ./app --file app/Dockerfile --tag docker.pkg.github.com/frutik/aio-py/aio-test:${{ steps.tagName.outputs.tag }}
     - name: log in
