@@ -10,12 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - uses: olegtarasov/get-tag@j1
+        id: tagName      
     - name: Build the Docker image
-      run: docker build ./app --file app/Dockerfile --tag docker.pkg.github.com/frutik/aio-py/aio-test:${{ github.ref }}
+      with:
+            tagname: ${{ steps.tagName.outputs.tag }}
+      run: docker build ./app --file app/Dockerfile --tag docker.pkg.github.com/frutik/aio-py/aio-test:${{ tagname }}
     - name: log in
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
       run: docker login -u frutik -p GITHUB_TOKEN docker.pkg.github.com
     - name: push
-      run: docker push docker.pkg.github.com/frutik/aio-py/aio-test:${{ github.ref }}
+      with:
+            tagname: ${{ steps.tagName.outputs.tag }}
+      run: docker push docker.pkg.github.com/frutik/aio-py/aio-test:${{ tagname }}
    
